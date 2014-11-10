@@ -1,4 +1,8 @@
-Sudoku Solver AI 413
+Sudoku Solver AI413
 =========
 
-For Educational Purposes
+We did not make the UI for this application
+http://ie.microsoft.com/testdrive/performance/sudoku/default.html
+
+
+For our project we developed our own Sudoku Solver.
