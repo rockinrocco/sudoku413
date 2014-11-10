@@ -1,4 +1,4 @@
-sudoku413
+Sudoku Solver AI 413
 =========
 
-For educational purposes
+For Educational Purposes
