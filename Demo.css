@@ -11,7 +11,8 @@ body
     margin: 0px;
     padding: 0px;
     font-family: Arial;
-    color: black;
+    background:black;
+    color: #FFFFFF;
     font-size: 12px;
 }
 
@@ -35,6 +36,9 @@ b
 }
 
 
+option{
+    color:black;
+}
 
 #Main,#Content,#Footer
 {
@@ -62,21 +66,11 @@ b
 {
     font-family: Segoe UI, Arial;
     font-weight: normal;
-    color: black;
+    color: #FFFFFF;
     font-size: 33px;
 }
 
-a
-{
-    color: black;
-    text-decoration: none;
-}
 
-a:hover
-{
-    color: black;
-    text-decoration: none;
-}
 
 #Content
 {
@@ -99,6 +93,12 @@ a:hover
     -webkit-box-shadow: 0 0 30px #680301;
 }
 
+a{
+    color:blue;
+}
+a :hover{
+    color:purple;
+}
 #Column2
 {
     width: 174px;
@@ -109,7 +109,7 @@ a:hover
 #Footer
 {
     margin-top: 600px;
-    color: black;
+    color: #FFFFFF;
 }
 
 #FooterDetails
@@ -174,7 +174,7 @@ label
     top: 3px;
     line-height: 24px;
     font-size: 15px;
-    color: black;
+    color: #FFFFFF;
 }
 
 select
@@ -202,14 +202,14 @@ select
 
 .finishedLabel,#timeFinished
 {
-    color: black;
+    color: #FFFFFF;
 }
 
 .editValue input
 {
     font-family: Segoe UI, Arial;
     font-size: 30px;
-    color: black;
+    color: #FFFFFF;
     width: 44px;
     /*height: 44px;*/
     padding: 0px;
@@ -225,12 +225,12 @@ input[type="submit"]
 {
     font-family: Arial;
     font-size: 18px;
-    color: #black;
+    color: #FFFFFF;
     text-transform: uppercase;
     border: 0px;
     min-width: 162px;
     min-height: 34px;
-    background: url('images/submitBackground.png') repeat-x;
+    background: red;
     margin: 8px 0px;
     cursor: pointer;
 }
@@ -239,12 +239,12 @@ input[type="submit"].gameControls
 {
     font-family: Arial;
     font-size: 16px;
-    color: #black;
+    color: #FFFFFF;
     text-transform: uppercase;
     border: 0px;
     min-width: 28px;
     min-height: 28px;
-    background: url('images/submitSmallBackground.png') repeat-x;
+    background: red;
     margin: 8px 0px;
     padding: 2px 16px;
     cursor: pointer;
@@ -278,7 +278,7 @@ input[type="submit"].gameControls
     width: 400px;
     background: #940302;
     font-size: 40px;
-    color: black;
+    color: #FFFFFF;
     text-align: center;
     padding: 40px;
     margin: 100px auto 0px auto;
@@ -294,7 +294,7 @@ small
 {
     font-size: 18px;
     font-weight: bold;
-    color: black;
+    color: #FFFFFF;
 }
 
 .errorsFound

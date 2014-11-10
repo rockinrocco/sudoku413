@@ -26,7 +26,16 @@
                 </div>
                 <div id="Content">
                     <div id="Column1">
-                        <span role="tab" aria-selected="true" aria-controls="demoIntro" tabindex="100">In this demo we take the well-known game of Sudoku, and demonstrate how developers can use HTML5 and JavaScript to create an efficient algorithm to solve these puzzles. The algorithms draw heavily on the Chakra engine’s support for ECMAScript 5 standard array operations to rapidly solve many Sudoku games. You can also manually solve Sudoku puzzles.</span>
+                        <span role="tab" aria-selected="true" aria-controls="demoIntro" tabindex="100">We took Microsoft's  <a href="http://ie.microsoft.com/testdrive/performance/sudoku/default.html">sudoku demo </a> and rewrote their solve function using constraint programming. To clarify, the UI was not created by us, we only implemented the algorithm to solve the sudoku puzzle. This project was for educational purposes only. Any copyright infringement is unintential.
+                            <br>
+                        <h4>Sudoku as a Constraint Satisfaction Problem</h4>
+                        Variables: Each cell on the sudoku board is a variable
+                        <br><br>
+                        Domain: The value in each grid can range from 1 to 9
+                        <br><br>
+                        Constrains:<br>&nbsp 1)Each block of 9 cell must have the numbers 1-9 and each number must only appear once. <br> &nbsp2)Each row of cells must have numbers 1-9 and the numbers must only appear once.<br>&nbsp 3) Each column of cells must have 1-9 and the numbers must only appear once.
+
+                        </span>
                         <br/>
                         <br/>
                         <br/>
@@ -40,7 +49,7 @@
                         <br/>
                         <br/>
                         <div id="calculating" style="display: none;">
-                            <img src="images/iconTime.png" alt="Calculating Clock" /><span class="finishedLabel">Solving puzzles...</span>
+                       <span class="finishedLabel">Solving puzzles...</span>
                         </div>
                         <div role="tab" aria-selected="true" aria-controls="perfResults" tabindex="200" id="finishedCalculating" style="display: none;">
                             <img src="images/iconTime.png" alt="Calculating Clock" /><span class="finishedLabel">Finished In:</span>
