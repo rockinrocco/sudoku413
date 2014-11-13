@@ -1,5 +1,6 @@
 function solveSudoku(inputBoard, stats) {
   var board = JSON.parse(JSON.stringify(inputBoard));
+  console.log(JSON.stringify(inputBoard))
   var newBoard = board;
   var endBoard=new Array(9);
   for(var i = 0;i<9;i++){
@@ -28,7 +29,14 @@ function solveSudoku(inputBoard, stats) {
   while(!checkComplete()){
     var oneLeft = findWithOneLeft();
     if(oneLeft==null){
+      oneLeft = lastInSquare();
+    }
+    if(oneLeft==null){
+      oneLeft = lastInLine();
+    }
+    if(oneLeft==null){
       impossibleBool=true;
+      console.log("imp")
       break;
     }
     addToNew(oneLeft[0],oneLeft[1],oneLeft[2]);
@@ -76,6 +84,53 @@ function solveSudoku(inputBoard, stats) {
       randomAvailable = Math.floor((Math.random() * 9)+1);
     }
     return [choice[0],choice[1],randomAvailable];
+  }
+  function lastInSquare(){
+    for(var iSquare = 0;iSquare<3;iSquare++){
+      for(var kSquare = 0;kSquare<3;kSquare++){
+        var availableNumbers = [[],[],[],[],[],[],[],[],[],[],[]];
+        for(var inin = 0;inin<3;inin++){
+          for(var ikik = 0;ikik<3;ikik++){
+            for(var ijk = 1;ijk<10;ijk++){
+              if(endBoard[iSquare+inin][kSquare+ikik][ijk]){
+                availableNumbers[ijk].push([iSquare+inin,kSquare+ikik])
+              }
+            }
+          }
+        }
+        for(var ijk = 1;ijk<10;ijk++){
+          if(availableNumbers[ijk].length==1){
+            return [availableNumbers[ijk][0][0],availableNumbers[ijk][0][1],ijk];
+          }
+        }
+      }
+    }
+  }
+  function lastInLine(){
+    for(var ttt = 0;ttt<9;ttt++){
+      var availableNumbersX = [[],[],[],[],[],[],[],[],[],[],[]];
+      var availableNumbersY = [[],[],[],[],[],[],[],[],[],[],[]];
+      for(var mmm = 0;mmm<9;mmm++){
+        for(var ijk = 1;ijk<10;ijk++){
+          if(endBoard[mmm][ttt][ijk]){
+            availableNumbersX[ijk].push([mmm,ttt])
+          }
+          if(endBoard[ttt][mmm][ijk]){
+            availableNumbersY[ijk].push([ttt,mmm])
+          }
+        }
+      }
+      // console.log(JSON.stringify(availableNumbersX));
+      // console.log(JSON.stringify(availableNumbersY));
+      for(var ijk = 1;ijk<10;ijk++){
+        if(availableNumbersX[ijk].length==1){
+          return [availableNumbersX[ijk][0][0],availableNumbersX[ijk][0][1],ijk];
+        }
+        if(availableNumbersY[ijk].length==1){
+          return [availableNumbersY[ijk][0][0],availableNumbersY[ijk][0][1],ijk];
+        }
+      }
+    }
   }
 
   function addToNew(x,y,n){
