@@ -1,5 +1,156 @@
 function solveSudoku(inputBoard, stats) {
+  var newBoard = inputBoard;
+  var endBoard=new Array(9);
+  for(var i = 0;i<9;i++){
+    endBoard[i]=new Array(9);
+    for(var k = 0;k<9;k++){
+      endBoard[i][k]=new Array(10); 
+      for(var j = 1;j<10;j++){
+        endBoard[i][k][j]=true;
+      }
+    }
+  }
   
+  //check if all zeros
+  var nonZero=false;
+  for(var i = 0;i<9;i++){
+    for(var k = 0;k<9;k++){
+      if(inputBoard[i][k]!=0){
+        nonZero=true;
+        removeFromLine(i,k,inputBoard[i][k]);
+        removeFromSquare(i,k,inputBoard[i][k]);
+      }
+    }
+  }
+
+  var impossibleBool=false;
+  while(!checkComplete()){
+    var oneLeft = findWithOneLeft();
+    if(oneLeft==null){
+      impossibleBool=true;
+      break;
+    }
+    addToNew(oneLeft[0],oneLeft[1],oneLeft[2]);
+    removeFromLine(oneLeft[0],oneLeft[1],oneLeft[2]);
+    removeFromSquare(oneLeft[0],oneLeft[1],oneLeft[2]);
+  }
+
+  if(!nonZero||impossibleBool){
+    // var randomAll = chooseRandomWorkingPosition();
+    // newBoard[randomAll[0]][randomAll[1]] = randomAll[2];
+    // return solveSudoku(newBoard,stats);
+  }else{
+    console.log("Solved")
+    return newBoard;
+  }
+  function addToNew(x,y,n){
+    newBoard[x][y]=n;
+  }
+  function removeFromLine(x,y,n){
+    for(var xy = 0;xy<9;xy++){
+      endBoard[xy][y][n]=false;
+      endBoard[x][xy][n]=false;
+    }
+  }
+  function removeFromSquare(x,y,n){
+    var xBox = 3*Math.floor(x/3);
+    var yBox = 3*Math.floor(y/3);
+    for(var qw=0;qw<3;qw++){
+      for(var we=0;we<3;we++){
+        endBoard[xBox+qw][yBox+we][n]=false;
+      }
+    }
+  }
+  function findWithOneLeft(){
+    for(var iqq = 0;iqq<9;iqq++){
+      for(var kqq = 0;kqq<9;kqq++){
+        if(countTrue(endBoard[iqq][kqq])==1){
+          var nValue;
+          for(var ijk = 1;ijk<10;ijk++){
+            if(endBoard[iqq][kqq][ijk]){
+              nValue=ijk;
+            }
+          }
+          return [iqq,kqq,nValue];
+        }
+      }
+    }
+    return null;
+  }
+  function countTrue(inputArray){
+    var count = 0;
+    for(var ik = 1;ik<10;ik++){
+      if(inputArray[ik]){
+        count++;
+      }
+    }
+    return count;
+  }
+  function checkComplete(){
+    for(var iee = 0;iee<9;iee++){
+      for(var kee = 0;kee<9;kee++){
+        if(newBoard[iee][kee]==0){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  function chooseRandomWorkingPosition(){
+    var xPos = Math.floor((Math.random(new Date()) * 9));
+    var yPos = Math.floor((Math.random(new Date()) * 9));
+    if(newBoard[xPos][yPos]!=0){
+      return chooseRandomWorkingPosition();
+    }
+    var randomAvailable = Math.floor((Math.random() * 9)+1);
+    while(!endBoard[xPos][yPos][randomAvailable]){
+      randomAvailable = Math.floor((Math.random() * 9)+1);
+    }
+    return [xPos,yPos,randomAvailable];
+  }
+
+
+
+
+
+
+
+
+
+
+  /*
+    We wrote everything above to solve it.
+
+
+    This was previous solveSudoku logic
+    in order to show we did not follow/copy/use it at all.
+
+
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   var stats = stats || {};
   stats['easy'] = true;
   var board = JSON.parse(JSON.stringify(inputBoard));
