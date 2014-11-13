@@ -15,10 +15,10 @@ function solveSudoku(inputBoard, stats) {
   var nonZero=false;
   for(var i = 0;i<9;i++){
     for(var k = 0;k<9;k++){
-      if(inputBoard[i][k]!=0){
+      if(newBoard[i][k]!=0){
         nonZero=true;
-        removeFromLine(i,k,inputBoard[i][k]);
-        removeFromSquare(i,k,inputBoard[i][k]);
+        removeFromLine(i,k,newBoard[i][k]);
+        removeFromSquare(i,k,newBoard[i][k]);
       }
     }
   }
@@ -36,13 +36,47 @@ function solveSudoku(inputBoard, stats) {
   }
 
   if(!nonZero||impossibleBool){
-    // var randomAll = chooseRandomWorkingPosition();
-    // newBoard[randomAll[0]][randomAll[1]] = randomAll[2];
-    // return solveSudoku(newBoard,stats);
+    var randomAll = chooseRandomWorkingPosition();
+    // console.log(randomAll);
+    if(randomAll==null){
+      return newBoard;
+    }
+    newBoard[randomAll[0]][randomAll[1]] = randomAll[2];
+    return solveSudoku(newBoard,stats);
   }else{
     console.log("Solved")
     return newBoard;
   }
+
+  function chooseRandomWorkingPosition(){
+    var possiblePositions = []
+    var smallestCount = 10;
+    for(var ia = 0;ia<9;ia++){
+      for(var ka = 0;ka<9;ka++){
+        if(newBoard[ia][ka]==0){
+          var countCount = countTrue(endBoard[ia][ka]);
+          if(countCount==0){
+            //there was an error if this happens
+          }else if(countCount==smallestCount){
+            possiblePositions.push([ia,ka]);
+          }else if(countCount<smallestCount){
+            possiblePositions=[[ia,ka]];
+            smallestCount=countCount;
+          }
+        }
+      }
+    }
+    if(possiblePositions.length==0){
+      return null
+    }
+    var choice = possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
+    var randomAvailable = Math.floor((Math.random() * 9)+1);
+    while(!endBoard[choice[0]][choice[1]][randomAvailable]){
+      randomAvailable = Math.floor((Math.random() * 9)+1);
+    }
+    return [choice[0],choice[1],randomAvailable];
+  }
+
   function addToNew(x,y,n){
     newBoard[x][y]=n;
   }
@@ -57,6 +91,7 @@ function solveSudoku(inputBoard, stats) {
     var yBox = 3*Math.floor(y/3);
     for(var qw=0;qw<3;qw++){
       for(var we=0;we<3;we++){
+        // console.log(n+"::::"+[xBox+qw]+"--"+[yBox+we])
         endBoard[xBox+qw][yBox+we][n]=false;
       }
     }
@@ -95,18 +130,6 @@ function solveSudoku(inputBoard, stats) {
       }
     }
     return true;
-  }
-  function chooseRandomWorkingPosition(){
-    var xPos = Math.floor((Math.random(new Date()) * 9));
-    var yPos = Math.floor((Math.random(new Date()) * 9));
-    if(newBoard[xPos][yPos]!=0){
-      return chooseRandomWorkingPosition();
-    }
-    var randomAvailable = Math.floor((Math.random() * 9)+1);
-    while(!endBoard[xPos][yPos][randomAvailable]){
-      randomAvailable = Math.floor((Math.random() * 9)+1);
-    }
-    return [xPos,yPos,randomAvailable];
   }
 
 
@@ -151,135 +174,135 @@ function solveSudoku(inputBoard, stats) {
 
 
 
-  var stats = stats || {};
-  stats['easy'] = true;
-  var board = JSON.parse(JSON.stringify(inputBoard));
-  var possibilities = [[], [], [], [], [], [], [], [], []];
+  // var stats = stats || {};
+  // stats['easy'] = true;
+  // var board = JSON.parse(JSON.stringify(inputBoard));
+  // var possibilities = [[], [], [], [], [], [], [], [], []];
   
-  for(var i = 0; i < 9; i++) {
-    for(var j = 0; j < 9; j++) {
-      possibilities[i][j] = [false, true, true, true, true, true, true, true, true, true];
-    }
-  }
+  // for(var i = 0; i < 9; i++) {
+  //   for(var j = 0; j < 9; j++) {
+  //     possibilities[i][j] = [false, true, true, true, true, true, true, true, true, true];
+  //   }
+  // }
   
-  var solved = false;
-  var impossible = false;
-  var mutated = false;
-  var needCheckFreedoms = false;
+  // var solved = false;
+  // var impossible = false;
+  // var mutated = false;
+  // var needCheckFreedoms = false;
   
-  //TODO: check input is a valid puzzle
+  // //TODO: check input is a valid puzzle
   
-  var loopCount = 0;
+  // var loopCount = 0;
   
-  outerLoop: while(!solved && !impossible) {
-    solved = true;
-    mutated = false;
-    loopCount++;
+  // outerLoop: while(!solved && !impossible) {
+  //   solved = true;
+  //   mutated = false;
+  //   loopCount++;
     
-    var leastFree = [];
-    var leastRemaining = 9;
+  //   var leastFree = [];
+  //   var leastRemaining = 9;
     
-    for(var i = 0; i < 9; i++) {
-      for(var j = 0; j < 9; j++) {
+  //   for(var i = 0; i < 9; i++) {
+  //     for(var j = 0; j < 9; j++) {
         
-        /*if(loopCount > 10000) {
-          window.console && console.log("bailing - too long");
-          printBoard(board);
-          return null;
-        }*/
+  //       /*if(loopCount > 10000) {
+  //         window.console && console.log("bailing - too long");
+  //         printBoard(board);
+  //         return null;
+  //       }*/
         
-        if(board[i][j] === 0) {
+  //       if(board[i][j] === 0) {
           
-          solved = false;
-          var currentPos = possibilities[i][j];
+  //         solved = false;
+  //         var currentPos = possibilities[i][j];
           
-          var zoneRow;
-          var zoneCol;
+  //         var zoneRow;
+  //         var zoneCol;
           
-          if(loopCount === 1) {
-            zoneRow = getZone(i) * 3;
-            zoneCol = getZone(j) * 3;
-            currentPos[10] = zoneRow;
-            currentPos[11] = zoneCol;
-          } else {
-            zoneRow = currentPos[10];
-            zoneCol = currentPos[11];
-          }
+  //         if(loopCount === 1) {
+  //           zoneRow = getZone(i) * 3;
+  //           zoneCol = getZone(j) * 3;
+  //           currentPos[10] = zoneRow;
+  //           currentPos[11] = zoneCol;
+  //         } else {
+  //           zoneRow = currentPos[10];
+  //           zoneCol = currentPos[11];
+  //         }
           
-          var wasMutated =  reducePossibilities(board, i, j, currentPos, zoneRow, zoneCol);
+  //         var wasMutated =  reducePossibilities(board, i, j, currentPos, zoneRow, zoneCol);
           
-          if(wasMutated) {
-            mutated = true;
-          }
+  //         if(wasMutated) {
+  //           mutated = true;
+  //         }
           
           
-          // check if the contraints above left us with only one valid option
-          var remaining = 0;
-          var lastDigit = 0;
+  //         // check if the contraints above left us with only one valid option
+  //         var remaining = 0;
+  //         var lastDigit = 0;
         
-          for(var k = 1; k <= 9; k++) {
-            if(currentPos[k]) {
-              remaining++;
-              lastDigit = k;
-            }
-          }
+  //         for(var k = 1; k <= 9; k++) {
+  //           if(currentPos[k]) {
+  //             remaining++;
+  //             lastDigit = k;
+  //           }
+  //         }
         
-          if(remaining === 0) {
-            //console.log("no remaining " + i + " " + j);
-            impossible = true;
-            break outerLoop;
-          }
-          else if(remaining === 1) {
-            board[i][j] = lastDigit;
-            mutated = true;
-            continue;
-          }
+  //         if(remaining === 0) {
+  //           //console.log("no remaining " + i + " " + j);
+  //           impossible = true;
+  //           break outerLoop;
+  //         }
+  //         else if(remaining === 1) {
+  //           board[i][j] = lastDigit;
+  //           mutated = true;
+  //           continue;
+  //         }
 
-          if(needCheckFreedoms) {
-            var solution = checkFreedoms(board, i, j, possibilities, zoneRow, zoneCol);
+  //         if(needCheckFreedoms) {
+  //           var solution = checkFreedoms(board, i, j, possibilities, zoneRow, zoneCol);
             
-            if(solution !== 0) {
+  //           if(solution !== 0) {
               
-              board[i][j] = solution;
-              mutated = true;
-              continue;
-            }
+  //             board[i][j] = solution;
+  //             mutated = true;
+  //             continue;
+  //           }
 
-            if(remaining === leastRemaining) {
-              leastFree.push([i,j]);
-            }
-            else if(remaining < leastRemaining) {
-              leastRemaining = remaining;
-              leastFree = [[i,j]];
-            }
-          }
+  //           if(remaining === leastRemaining) {
+  //             leastFree.push([i,j]);
+  //           }
+  //           else if(remaining < leastRemaining) {
+  //             leastRemaining = remaining;
+  //             leastFree = [[i,j]];
+  //           }
+  //         }
           
-        }
-      }
-    }
+  //       }
+  //     }
+  //   }
     
-    if(mutated === false && solved === false) {
+  //   if(mutated === false && solved === false) {
       
-      // time to break out freedom checking
-      if(needCheckFreedoms === false) {
-        needCheckFreedoms = true;
-        stats['medium'] = true;
-        continue;
-      }
+  //     // time to break out freedom checking
+  //     if(needCheckFreedoms === false) {
+  //       needCheckFreedoms = true;
+  //       stats['medium'] = true;
+  //       continue;
+  //     }
       
-      // we're stuck, time to start guessing
-      return solveByGuessing(board, possibilities, leastFree, stats);
+  //     // we're stuck, time to start guessing
+  //     return solveByGuessing(board, possibilities, leastFree, stats);
       
-    }
-  }
+  //   }
+  // }
   
-  if(impossible) {
-    //window.console && console.log("board is impossible");
-    return null;
-  }
-  else {
-    return board;
-  }
+  // if(impossible) {
+  //   //window.console && console.log("board is impossible");
+  //   return null;
+  // }
+  // else {
+  //   return board;
+  // }
 }
 
 function getZone(i) {
