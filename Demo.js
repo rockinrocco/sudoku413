@@ -19,12 +19,14 @@ function solveSudoku(inputBoard, stats) {
     for(var k = 0;k<9;k++){
       if(newBoard[i][k]!=0){
         nonZero=true;
+        console.log(i+"::"+k+":::"+newBoard[i][k])
+        addToNew(i,k,newBoard[i][k])
         removeFromLine(i,k,newBoard[i][k]);
         removeFromSquare(i,k,newBoard[i][k]);
       }
     }
   }
-
+console.log(JSON.stringify(endBoard))
   var impossibleBool=false;
   while(!checkComplete()){
     var oneLeft = findWithOneLeft();
@@ -36,6 +38,7 @@ function solveSudoku(inputBoard, stats) {
     }
     if(oneLeft==null){
       impossibleBool=true;
+      // console.log(JSON.stringify(endBoard))
       console.log("imp")
       break;
     }
@@ -138,6 +141,9 @@ function solveSudoku(inputBoard, stats) {
   }
 
   function addToNew(x,y,n){
+    for(var woke = 1;woke<10;woke++){
+      endBoard[x][y][woke]=false;
+    }
     newBoard[x][y]=n;
   }
   function removeFromLine(x,y,n){
