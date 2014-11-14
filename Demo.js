@@ -1,10 +1,5 @@
 function solveSudoku(inputBoard, stats) {
   var board = JSON.parse(JSON.stringify(inputBoard));
-<<<<<<< HEAD
-  console.log(JSON.stringify(inputBoard))
-=======
-  console.log(board)
->>>>>>> 3f6fcaad2d364656e4f14651c80fea9fc0f34787
   var newBoard = board;
   var endBoard=new Array(9);
   for(var i = 0;i<9;i++){
