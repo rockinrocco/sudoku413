@@ -1,7 +1,12 @@
+/*
+  Paul Bliudzius and Matt Rocco
+  Sudoku Solver - AI - CSSE 413
+  Wrote Code from Lines: 1-196
+*/
+
 function solveSudoku(inputBoard, stats) {
   var board = JSON.parse(JSON.stringify(inputBoard));
-  console.log(board)
-    var newBoard = board;
+  var newBoard = board;
   var endBoard=new Array(9);
   for(var i = 0;i<9;i++){
     endBoard[i]=new Array(9);
@@ -19,27 +24,25 @@ function solveSudoku(inputBoard, stats) {
     for(var k = 0;k<9;k++){
       if(newBoard[i][k]!=0){
         nonZero=true;
-        console.log(i+"::"+k+":::"+newBoard[i][k])
         addToNew(i,k,newBoard[i][k])
         removeFromLine(i,k,newBoard[i][k]);
         removeFromSquare(i,k,newBoard[i][k]);
       }
     }
   }
-console.log(JSON.stringify(endBoard))
+// console.log(JSON.stringify(endBoard))
   var impossibleBool=false;
   while(!checkComplete()){
-    var oneLeft = findWithOneLeft();
+    var oneLeft = lastInLine();
     if(oneLeft==null){
       oneLeft = lastInSquare();
     }
     if(oneLeft==null){
-      oneLeft = lastInLine();
+      oneLeft = findWithOneLeft(); //This should not actually be used, it is backup
     }
     if(oneLeft==null){
       impossibleBool=true;
-      // console.log(JSON.stringify(endBoard))
-      console.log("imp")
+      console.log("Impossible")
       break;
     }
     addToNew(oneLeft[0],oneLeft[1],oneLeft[2]);
@@ -48,21 +51,17 @@ console.log(JSON.stringify(endBoard))
   }
 
   if(!nonZero||impossibleBool){
+    //Backup function if there are multiple options, randomly chooses one, not actually needed for plausible sudoku boards
     var randomAll = chooseRandomWorkingPosition();
-    // console.log(randomAll);
     if(randomAll==null){
       return newBoard;
     }
-    newBoard[randomAll[0]][randomAll[1]] = randomAll[2];
-
-
+    addToNew(randomAll[0],randomAll[1],randomAll[2])
     return solveSudoku(newBoard,stats);
   }else{
     console.log("Solved")
-
     return newBoard;
   }
-
 
   function chooseRandomWorkingPosition(){
     var possiblePositions = []
@@ -127,8 +126,6 @@ console.log(JSON.stringify(endBoard))
           }
         }
       }
-      // console.log(JSON.stringify(availableNumbersX));
-      // console.log(JSON.stringify(availableNumbersY));
       for(var ijk = 1;ijk<10;ijk++){
         if(availableNumbersX[ijk].length==1){
           return [availableNumbersX[ijk][0][0],availableNumbersX[ijk][0][1],ijk];
@@ -157,7 +154,6 @@ console.log(JSON.stringify(endBoard))
     var yBox = 3*Math.floor(y/3);
     for(var qw=0;qw<3;qw++){
       for(var we=0;we<3;we++){
-        // console.log(n+"::::"+[xBox+qw]+"--"+[yBox+we])
         endBoard[xBox+qw][yBox+we][n]=false;
       }
     }
@@ -197,7 +193,6 @@ console.log(JSON.stringify(endBoard))
     }
     return true;
   }
-
 }
 
 
@@ -207,14 +202,25 @@ console.log(JSON.stringify(endBoard))
 
 
 
+
+
+
   /*
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     We wrote everything above to solve it.
 
 
     This was previous solveSudoku logic
     in order to show we did not follow/copy/use it at all.
 
+     PAUL BLIUDZIUS AND MATT ROCCO
 
+
+
+
+
+      Old code that we didn't use
+      VVVVVVVVVVVVVVVVVVVVVVVVVVVV
   */
 
 
