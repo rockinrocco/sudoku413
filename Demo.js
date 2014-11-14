@@ -1,5 +1,6 @@
 function solveSudoku(inputBoard, stats) {
   var board = JSON.parse(JSON.stringify(inputBoard));
+  console.log(board)
   var newBoard = board;
   var endBoard=new Array(9);
   for(var i = 0;i<9;i++){
@@ -43,11 +44,15 @@ function solveSudoku(inputBoard, stats) {
       return newBoard;
     }
     newBoard[randomAll[0]][randomAll[1]] = randomAll[2];
+
+
     return solveSudoku(newBoard,stats);
   }else{
     console.log("Solved")
+
     return newBoard;
   }
+
 
   function chooseRandomWorkingPosition(){
     var possiblePositions = []
@@ -133,7 +138,7 @@ function solveSudoku(inputBoard, stats) {
     return true;
   }
 
-
+}
 
 
 
@@ -173,138 +178,139 @@ function solveSudoku(inputBoard, stats) {
 
 
 
+// function solveSudoku(inputBoard, stats) {
 
-
-  // var stats = stats || {};
-  // stats['easy'] = true;
-  // var board = JSON.parse(JSON.stringify(inputBoard));
-  // var possibilities = [[], [], [], [], [], [], [], [], []];
+//   var stats = stats || {};
+//   stats['easy'] = true;
+//   var board = JSON.parse(JSON.stringify(inputBoard));
+//   var possibilities = [[], [], [], [], [], [], [], [], []];
   
-  // for(var i = 0; i < 9; i++) {
-  //   for(var j = 0; j < 9; j++) {
-  //     possibilities[i][j] = [false, true, true, true, true, true, true, true, true, true];
-  //   }
-  // }
+//   for(var i = 0; i < 9; i++) {
+//     for(var j = 0; j < 9; j++) {
+//       possibilities[i][j] = [false, true, true, true, true, true, true, true, true, true];
+//     }
+//   }
   
-  // var solved = false;
-  // var impossible = false;
-  // var mutated = false;
-  // var needCheckFreedoms = false;
+//   var solved = false;
+//   var impossible = false;
+//   var mutated = false;
+//   var needCheckFreedoms = false;
   
-  // //TODO: check input is a valid puzzle
+//   //TODO: check input is a valid puzzle
   
-  // var loopCount = 0;
+//   var loopCount = 0;
   
-  // outerLoop: while(!solved && !impossible) {
-  //   solved = true;
-  //   mutated = false;
-  //   loopCount++;
+//   outerLoop: while(!solved && !impossible) {
+//     solved = true;
+//     mutated = false;
+//     loopCount++;
     
-  //   var leastFree = [];
-  //   var leastRemaining = 9;
+//     var leastFree = [];
+//     var leastRemaining = 9;
     
-  //   for(var i = 0; i < 9; i++) {
-  //     for(var j = 0; j < 9; j++) {
+//     for(var i = 0; i < 9; i++) {
+//       for(var j = 0; j < 9; j++) {
         
-  //       /*if(loopCount > 10000) {
-  //         window.console && console.log("bailing - too long");
-  //         printBoard(board);
-  //         return null;
-  //       }*/
+//         /*if(loopCount > 10000) {
+//           window.console && console.log("bailing - too long");
+//           printBoard(board);
+//           return null;
+//         }*/
         
-  //       if(board[i][j] === 0) {
+//         if(board[i][j] === 0) {
           
-  //         solved = false;
-  //         var currentPos = possibilities[i][j];
+//           solved = false;
+//           var currentPos = possibilities[i][j];
           
-  //         var zoneRow;
-  //         var zoneCol;
+//           var zoneRow;
+//           var zoneCol;
           
-  //         if(loopCount === 1) {
-  //           zoneRow = getZone(i) * 3;
-  //           zoneCol = getZone(j) * 3;
-  //           currentPos[10] = zoneRow;
-  //           currentPos[11] = zoneCol;
-  //         } else {
-  //           zoneRow = currentPos[10];
-  //           zoneCol = currentPos[11];
-  //         }
+//           if(loopCount === 1) {
+//             zoneRow = getZone(i) * 3;
+//             zoneCol = getZone(j) * 3;
+//             currentPos[10] = zoneRow;
+//             currentPos[11] = zoneCol;
+//           } else {
+//             zoneRow = currentPos[10];
+//             zoneCol = currentPos[11];
+//           }
           
-  //         var wasMutated =  reducePossibilities(board, i, j, currentPos, zoneRow, zoneCol);
+//           var wasMutated =  reducePossibilities(board, i, j, currentPos, zoneRow, zoneCol);
           
-  //         if(wasMutated) {
-  //           mutated = true;
-  //         }
+//           if(wasMutated) {
+//             mutated = true;
+//           }
           
           
-  //         // check if the contraints above left us with only one valid option
-  //         var remaining = 0;
-  //         var lastDigit = 0;
+//           // check if the contraints above left us with only one valid option
+//           var remaining = 0;
+//           var lastDigit = 0;
         
-  //         for(var k = 1; k <= 9; k++) {
-  //           if(currentPos[k]) {
-  //             remaining++;
-  //             lastDigit = k;
-  //           }
-  //         }
+//           for(var k = 1; k <= 9; k++) {
+//             if(currentPos[k]) {
+//               remaining++;
+//               lastDigit = k;
+//             }
+//           }
         
-  //         if(remaining === 0) {
-  //           //console.log("no remaining " + i + " " + j);
-  //           impossible = true;
-  //           break outerLoop;
-  //         }
-  //         else if(remaining === 1) {
-  //           board[i][j] = lastDigit;
-  //           mutated = true;
-  //           continue;
-  //         }
+//           if(remaining === 0) {
+//             //console.log("no remaining " + i + " " + j);
+//             impossible = true;
+//             break outerLoop;
+//           }
+//           else if(remaining === 1) {
+//             board[i][j] = lastDigit;
+//             mutated = true;
+//             continue;
+//           }
 
-  //         if(needCheckFreedoms) {
-  //           var solution = checkFreedoms(board, i, j, possibilities, zoneRow, zoneCol);
+//           if(needCheckFreedoms) {
+//             var solution = checkFreedoms(board, i, j, possibilities, zoneRow, zoneCol);
             
-  //           if(solution !== 0) {
+//             if(solution !== 0) {
               
-  //             board[i][j] = solution;
-  //             mutated = true;
-  //             continue;
-  //           }
+//               board[i][j] = solution;
+//               mutated = true;
+//               continue;
+//             }
 
-  //           if(remaining === leastRemaining) {
-  //             leastFree.push([i,j]);
-  //           }
-  //           else if(remaining < leastRemaining) {
-  //             leastRemaining = remaining;
-  //             leastFree = [[i,j]];
-  //           }
-  //         }
+//             if(remaining === leastRemaining) {
+//               leastFree.push([i,j]);
+//             }
+//             else if(remaining < leastRemaining) {
+//               leastRemaining = remaining;
+//               leastFree = [[i,j]];
+//             }
+//           }
           
-  //       }
-  //     }
-  //   }
+//         }
+//       }
+//     }
     
-  //   if(mutated === false && solved === false) {
+//     if(mutated === false && solved === false) {
       
-  //     // time to break out freedom checking
-  //     if(needCheckFreedoms === false) {
-  //       needCheckFreedoms = true;
-  //       stats['medium'] = true;
-  //       continue;
-  //     }
+//       // time to break out freedom checking
+//       if(needCheckFreedoms === false) {
+//         needCheckFreedoms = true;
+//         stats['medium'] = true;
+//         continue;
+//       }
       
-  //     // we're stuck, time to start guessing
-  //     return solveByGuessing(board, possibilities, leastFree, stats);
+//       // we're stuck, time to start guessing
+//       return solveByGuessing(board, possibilities, leastFree, stats);
       
-  //   }
-  // }
+//     }
+//   }
   
-  // if(impossible) {
-  //   //window.console && console.log("board is impossible");
-  //   return null;
-  // }
-  // else {
-  //   return board;
-  // }
-}
+//   if(impossible) {
+//     //window.console && console.log("board is impossible");
+//     return null;
+//   }
+//   else {
+//     console.log(board)
+//     return board;
+//   }
+// }
 
 function getZone(i) {
   if(i < 3) {
@@ -518,68 +524,68 @@ function shuffleArray(array) {
 
 
 function generatePuzzle(difficulty) {
-  
-  if(difficulty !== 1 && difficulty !== 2 && 
-    difficulty !== 3 && difficulty !== 4  && 
-    difficulty !== 5) {
-      
-    difficulty = 1;
-  }
-  
-  var solvedPuzzle = solveSudoku(emptyPuzzle);
-  
-  var indexes = new Array(81);
-  
-  for(var i = 0; i < 81; i++) {
-    indexes[i] = i;
-  }
-  
-  shuffleArray(indexes);
-  
-  var knownCount = 81;
-  
-  for(var i = 0; i < 81; i++) {
-    
-    if(knownCount <= 25) {
-      break;
-    }
-    
-    //easy check
-    if(difficulty == 1 && knownCount <= 35) {
-      break;
-    }
-    
-    var index = indexes[i];
-    
-    var row = Math.floor(index / 9);
-    var col = index % 9;
-    var currentValue = solvedPuzzle[row][col];
-    var state = {};
-    solvedPuzzle[row][col] = 0;
-    var resolvedPuzzle = solveSudoku(solvedPuzzle, state);
-    
-    // some clarity -- what the solver considers 'medium' is hard for most users
-    var undo = false;
-    if(difficulty <= 2 && state.medium) {
-      undo = true;
-    } else if(difficulty <= 3 && state.hard) {
-      undo = true;
-    } else if(difficulty <= 4 && state.vhard) {
-      undo = true;
-    }
-    
-    if(undo) {
-      solvedPuzzle[row][col] = currentValue;
-    }
-    else {
-      knownCount--;
-    }
-    
-    
-  }
-  
-  return solvedPuzzle;
-  
+  var easyPuzzle = [
+  [5, 3, 0, 0, 7, 0, 0, 0, 0],
+  [6, 0, 0, 1, 9, 5, 0, 0, 0],
+  [0, 9, 8, 0, 0, 0, 0, 6, 0],
+  [8, 0, 0, 0, 6, 0, 0, 0, 3],
+  [4, 0, 0, 8, 0, 3, 0, 0, 1],
+  [7, 0, 0, 0, 2, 0, 0, 0, 6],
+  [0, 6, 0, 0, 0, 0, 2, 8, 0],
+  [0, 0, 0, 4, 1, 9, 0, 0, 5],
+  [0, 0, 0, 0, 8, 0, 0, 7, 9]
+];
+var easyPuzzle2 = [
+  [1, 6, 0, 0, 0, 3, 0, 0, 0],
+  [2, 0, 0, 7, 0, 6, 0, 1, 4],
+  [0, 4, 5, 0, 8, 1, 0, 0, 7],
+  [5, 0, 8, 4, 0, 0, 0, 0, 0],
+  [0, 0, 4, 3, 0, 8, 9, 0, 0],
+  [0, 0, 0, 0, 0, 7, 2, 0, 8],
+  [8, 0, 0, 6, 3, 0, 1, 9, 0],
+  [6, 3, 0, 1, 0, 5, 0, 0, 2],
+  [0, 0, 0, 8, 0, 0, 0, 3, 6]
+];
+
+var easyPuzzle3 = [
+  [8, 1, 0, 0, 2, 9, 0, 0, 0],
+  [4, 0, 6, 0, 7, 3, 0, 5, 1],
+  [0, 7, 0, 0, 0, 0, 8, 0, 2],
+  [0, 0, 4, 5, 0, 0, 0, 0, 6],
+  [7, 6, 0, 0, 0, 0, 0, 1, 3],
+  [1, 0, 0, 0, 0, 6, 2, 0, 0],
+  [2, 0, 7, 0, 0, 0, 0, 8, 0],
+  [6, 9, 0, 2, 8, 0, 3, 0, 5],
+  [0, 0, 0, 9, 6, 0, 0, 2, 4]
+];
+var hardPuzzle = [
+  [0, 0, 3, 0, 0, 8, 0, 0, 0],
+  [0, 4, 0, 0, 0, 0, 0, 0, 0],
+  [0, 8, 0, 3, 5, 0, 9, 0, 0],
+  [8, 0, 5, 0, 0, 6, 0, 0, 0],
+  [1, 0, 0, 7, 3, 2, 0, 0, 8],
+  [0, 0, 0, 8, 0, 0, 3, 0, 1],
+  [0, 0, 8, 0, 1, 4, 0, 7, 0],
+  [0, 0, 0, 0, 0, 0, 0, 5, 0],
+  [0, 0, 0, 9, 0, 0, 2, 0, 0]
+];
+
+var mediumPuzzle = [
+  [0, 8, 3, 7, 0, 0, 0, 9, 0],
+  [0, 0, 7, 0, 5, 0, 6, 4, 0],
+  [0, 0, 0, 9, 0, 0, 0, 0, 3],
+  [0, 0, 0, 1, 0, 0, 0, 0, 7],
+  [0, 6, 9, 2, 0, 4, 3, 8, 0],
+  [7, 0, 0, 0, 0, 9, 0, 0, 0],
+  [9, 0, 0, 0, 0, 3, 0, 0, 0],
+  [0, 5, 6, 0, 2, 0, 4, 0, 0],
+  [0, 1, 0, 0, 0, 7, 5, 3, 0]
+];
+
+var puzzles = [easyPuzzle,easyPuzzle2,easyPuzzle3, hardPuzzle, mediumPuzzle]
+var rand = Math.floor(Math.random()*puzzles.length);
+
+ return puzzles[rand];
 }
 
 
@@ -744,26 +750,7 @@ var emptyPuzzle = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-function stressTest() {
-  
-  var intervalCount = 0;
-  var intervalId = window.setInterval(function() {
-    intervalCount++;
-    if(intervalCount  > 500) {
-      window.console && console.log("finished");
-      window.clearInterval(intervalId);
-    }
-    var newPuzzle = solveSudoku(emptyPuzzle);
-    var resp = verifySolution(newPuzzle);
-    
-    if(resp['valid'] === false) {
-      window.console && console.log("Boo! " + intervalCount);
-      printBoard(newPuzzle);
-    }
-    
-  }, 1);
-  
-}
+
 
 function cellInputHandler(event) {
   if(!this.value.match(/^[1-9]$/)) {
@@ -858,78 +845,78 @@ function printBoard(board) {
   }
 }
 
-function solveTest(level, after) {
+// function solveTest(level, after) {
 
-  var easyCount = 2000;
-  var hardCount = 200;
+//   var easyCount = 2000;
+//   var hardCount = 200;
 
-  switch(level) {
-    case 1:
-      easyCount = 475;
-      hardCount = 25;
-      break;
-    case 2:
-      easyCount = 2375;
-      hardCount = 125;
-      break;
-    case 3:
-      easyCount = 4750;
-      hardCount = 250;
-      break;
-  }
+//   switch(level) {
+//     case 1:
+//       easyCount = 475;
+//       hardCount = 25;
+//       break;
+//     case 2:
+//       easyCount = 2375;
+//       hardCount = 125;
+//       break;
+//     case 3:
+//       easyCount = 4750;
+//       hardCount = 250;
+//       break;
+//   }
   
-  Math.enableFakeRandom();
-  Math.fakeRandomSeed(31337);
+//   Math.enableFakeRandom();
+//   Math.fakeRandomSeed(31337);
   
-  renderBoard(easyPuzzle);
+//   renderBoard(easyPuzzle);
   
-  var timeElapsed = 0;
+//   var timeElapsed = 0;
   
-  var tests = [];
-  tests.push(function() {
-    timeElapsed += solveTestHelper(easyPuzzle, easyCount);
-  });
-  tests.push(function() {
-    timeElapsed += solveTestHelper(easyPuzzle2, easyCount);
-  });
-  tests.push(function() {
-    timeElapsed += solveTestHelper(mediumPuzzle, hardCount);
-  });
-  tests.push(function() {
-    timeElapsed += solveTestHelper(hardPuzzle, hardCount);
-  });
-  tests.push(function() {
-    Math.disableFakeRandom();
-    document.getElementById("timeFinished").textContent = timeElapsed.toFixed(3) + "s";
-  });
-  tests.push(after);
+//   var tests = [];
+//   tests.push(function() {
+//     timeElapsed += solveTestHelper(easyPuzzle, easyCount);
+//   });
+//   tests.push(function() {
+//     timeElapsed += solveTestHelper(easyPuzzle2, easyCount);
+//   });
+//   tests.push(function() {
+//     timeElapsed += solveTestHelper(mediumPuzzle, hardCount);
+//   });
+//   tests.push(function() {
+//     timeElapsed += solveTestHelper(hardPuzzle, hardCount);
+//   });
+//   tests.push(function() {
+//     Math.disableFakeRandom();
+//     document.getElementById("timeFinished").textContent = timeElapsed.toFixed(3) + "s";
+//   });
+//   tests.push(after);
   
-  var current = 0;
+//   var current = 0;
   
-  var timeoutFunc = function() {
-    if(current < tests.length) {
-      tests[current]();
-      current++;
-      window.setTimeout(timeoutFunc, 300);
-    }
-  }
+//   var timeoutFunc = function() {
+//     if(current < tests.length) {
+//       tests[current]();
+//       current++;
+//       window.setTimeout(timeoutFunc, 300);
+//     }
+//   }
   
-  window.setTimeout(timeoutFunc, 300);
+//   window.setTimeout(timeoutFunc, 300);
   
-}
+// }
 
-function solveTestHelper(puzzle, iterations) {
-  var solution = null;
-  var start = new Date();
-  for(var i = 0; i < iterations; i++) {
-    solution = solveSudoku(puzzle);
-  }
-  var end = new Date();
-  renderBoard(puzzle);
-  renderSolvedBoard(solution);
-  var timeElapsed = (end.getTime() - start.getTime()) / 1000;
-  return timeElapsed;
-}
+// function solveTestHelper(puzzle, iterations) {
+//   var solution = null;
+//   var start = new Date();
+//   for(var i = 0; i < iterations; i++) {
+//     solution = solveSudoku(puzzle);
+//   }
+//   var end = new Date();
+//   renderBoard(puzzle);
+//   renderSolvedBoard(solution);
+//   var timeElapsed = (end.getTime() - start.getTime()) / 1000;
+//   return timeElapsed;
+// }
 
 function initialize() {
   // hook up buttons
@@ -985,7 +972,7 @@ function initialize() {
     var result = verifySolution(board);
     if(result['valid']) {
     
-      var validMessages = [ "LOOKIN GOOD", "KEEP GOING", "AWESOME", "EXCELLENT", 
+      var validMessages = [ "Wow. you should give this guys an A+!", "KEEP GOING", "AWESOME", "EXCELLENT", 
         "NICE", "SWEET", "LOOKS GOOD TO ME"];
       
       if(verifySolution(board, true)['valid']) {
